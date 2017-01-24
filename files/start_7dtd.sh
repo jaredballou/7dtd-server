@@ -18,15 +18,23 @@ exit_handler()
 if [ ! -d "/steamcmd/7dtd/server_data" ]; then
 	echo "Creating folder structure.."
 	mkdir -p /steamcmd/7dtd/server_data
+fi
+if [ ! -e "/steamcmd/7dtd/server_data/serverconfig.xml" ]; then
 	echo "Copying default server configuration.."
-	cp /serverconfig.xml /steamcmd/7dtd/server_data/serverconfig.xml
+	cp /serverconfig_original.xml /steamcmd/7dtd/server_data/serverconfig.xml
+	echo "Setting randomized passwords for remote access.."
+	/serverconfig.py -p
+fi
+if [ ! -e "/steamcmd/7dtd/server_data/7dtd.log" ]; then
 	echo "Creating an empty log file.."
 	touch /steamcmd/7dtd/server_data/7dtd.log
 fi
 
-# Install/update steamcmd
-echo "Installing/updating steamcmd.."
-curl -s http://media.steampowered.com/installer/steamcmd_linux.tar.gz | tar -v -C /steamcmd -zx
+if [ ! -e "/steamcmd/steamcmd.sh" ]; then
+	# Install/update steamcmd
+	echo "Installing/updating steamcmd.."
+	curl -s http://media.steampowered.com/installer/steamcmd_linux.tar.gz | tar -v -C /steamcmd -zx
+fi
 
 # Disable auto-update if start mode is 2
 if [ "$SEVEN_DAYS_TO_DIE_START_MODE" = "2" ]; then

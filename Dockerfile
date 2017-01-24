@@ -65,4 +65,5 @@ ENV SEVEN_DAYS_TO_DIE_UPDATE_CHECKING "0"
 ENV SEVEN_DAYS_TO_DIE_UPDATE_BRANCH "public"
 
 # Start the server
+ADD files/serverconfig.py /serverconfig.py
 ENTRYPOINT ["./start.sh"]
