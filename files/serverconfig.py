@@ -39,6 +39,7 @@ def main():
             ss.set_value(name=args['name'], value=args['value'])
         else:
             print ss.get_value(name=args['name'])
+    ss.check_save()
 
 def random_string(length=8, chars=None):
     if chars is None:
@@ -47,6 +48,7 @@ def random_string(length=8, chars=None):
 
 class ServerSettings(object):
     def __init__(self, serverconfig_path=None):
+        self.do_save = False
         self.serverconfig_path = serverconfig_path
         self.load_from_xml()
 
@@ -61,11 +63,16 @@ class ServerSettings(object):
     def save_to_file(self, xml_file=None):
         if xml_file is None:
             xml_file = self.serverconfig_path
+        print "Saving to %s" % xml_file
         self.tree.write(xml_file)
 
     def set_value(self, name, value):
         self.tree.find('./property[@name="%s"]' % name).attrib['value'] = value
-        ss.save_to_file()
+        self.do_save = True
+
+    def check_save(self):
+        if self.do_save:
+            self.save_to_file()
 
     def get_value(self, name, default="", caption=False):
         value = self.tree.find('./property[@name="%s"]' % name).attrib['value']
