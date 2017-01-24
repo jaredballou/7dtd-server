@@ -19,7 +19,7 @@ RUN apt-get install --no-install-recommends -y \
 USER root
 
 # Setup the default timezone
-ENV TZ=Europe/Helsinki
+ENV TZ=EST5EDT
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Create and set the steamcmd folder as a volume
@@ -31,21 +31,21 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install -y nodejs
 
 # Setup scheduling support
-ADD scheduler_app/ /scheduler_app/
+ADD files/scheduler_app/ /scheduler_app/
 WORKDIR /scheduler_app
 RUN npm install
 WORKDIR /
 
 # Add the steamcmd installation script
-ADD install.txt /install.txt
+ADD files/install.txt /install.txt
 
 # Copy scripts
-ADD start_7dtd.sh /start.sh
-ADD shutdown.sh /shutdown.sh
-ADD update_check.sh /update_check.sh
+ADD files/start_7dtd.sh /start.sh
+ADD files/shutdown.sh /shutdown.sh
+ADD files/update_check.sh /update_check.sh
 
 # Copy the default server config in place
-ADD serverconfig_original.xml /serverconfig.xml
+ADD files/serverconfig_original.xml /serverconfig_original.xml
 
 # Expose necessary ports
 EXPOSE 26900
