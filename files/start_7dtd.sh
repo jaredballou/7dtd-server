@@ -21,7 +21,7 @@ if [ ! -d "/steamcmd/7dtd/server_data" ]; then
 fi
 if [ ! -e "/steamcmd/7dtd/server_data/serverconfig.xml" ]; then
 	echo "Copying default server configuration.."
-	cp /serverconfig_original.xml /steamcmd/7dtd/server_data/serverconfig.xml
+	cp /default.serverconfig.xml /steamcmd/7dtd/server_data/serverconfig.xml
 	echo "Setting randomized passwords for remote access.."
 	/serverconfig.py -p
 fi

@@ -45,7 +45,7 @@ ADD files/shutdown.sh /shutdown.sh
 ADD files/update_check.sh /update_check.sh
 
 # Copy the default server config in place
-ADD files/serverconfig_original.xml /serverconfig_original.xml
+ADD files/default.serverconfig.xml /default.serverconfig.xml
 
 # Expose necessary ports
 EXPOSE 26900
