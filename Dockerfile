@@ -1,36 +1,9 @@
-FROM ubuntu:16.04
-
-# Run a quick apt-get update/upgrade
-RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y
-
-# Install dependencies, mainly for SteamCMD
-RUN apt-get install --no-install-recommends -y \
-    ca-certificates \
-    software-properties-common \
-    python-software-properties \
-    lib32gcc1 \
-    xvfb \
-    curl \
-    wget \
-    telnet \
-    expect
-
-# Run as root
+FROM jballou/steamcmd:latest
 USER root
 
-# Setup the default timezone
-ENV TZ=EST5EDT
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# Create and set the steamcmd folder as a volume
-RUN mkdir -p /steamcmd/7dtd
-VOLUME ["/steamcmd/7dtd"]
-
-# Install NodeJS (see below)
+# Setup scheduling support
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install -y nodejs
-
-# Setup scheduling support
 ADD files/scheduler_app/ /scheduler_app/
 WORKDIR /scheduler_app
 RUN npm install
@@ -64,6 +37,7 @@ ENV SEVEN_DAYS_TO_DIE_START_MODE "0"
 ENV SEVEN_DAYS_TO_DIE_UPDATE_CHECKING "0"
 ENV SEVEN_DAYS_TO_DIE_UPDATE_BRANCH "public"
 
-# Start the server
 ADD files/serverconfig.py /serverconfig.py
+
+# Start the server
 ENTRYPOINT ["./start.sh"]
